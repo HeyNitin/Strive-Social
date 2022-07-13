@@ -7,7 +7,9 @@ const Homepage = (): JSX.Element => {
 		<div className=" min-h-[calc(100vh-5rem)] flex flex-col">
 			<div className="grid sm:grid-cols-2 min-h-[calc(100vh-12rem)] items-center">
 				<div className="flex flex-col items-center">
-					<p className="text-3xl mb-12">Strive Social</p>
+					<p className="text-3xl mb-12">
+						<span className="text-orange-500 font-semibold">Strive</span> Social
+					</p>
 					<div className="flex flex-col gap-2">
 						<p>
 							<span className="text-2xl text-gray-400">Follow</span> poeple
@@ -24,13 +26,13 @@ const Homepage = (): JSX.Element => {
 					</div>
 					<button
 						onClick={() => Navigate("/login")}
-						className="mt-12 bg-orange-500 w-72 p-1"
+						className="mt-12 text-white bg-orange-600 w-72 p-1"
 					>
 						Join Now
 					</button>
 					<p
 						onClick={() => Navigate("/signup")}
-						className="cursor-pointer mt-2"
+						className="cursor-pointer mt-2 text-orange-500"
 					>
 						Already have an accout?
 					</p>
