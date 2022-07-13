@@ -1,4 +1,4 @@
-const nameFormat = /^[a-zA-Z]{2,25}( [a-zA-Z]{2,25})+$/;
+const nameFormat = /^\S+\w{3,15}$/;
 const mailformat = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 const passwordFormat = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 

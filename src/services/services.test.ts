@@ -6,13 +6,13 @@ import {
 
 describe("Testing Name validator", () => {
 	test("Testing wrong format", () => {
-		let name = "Nitin";
+		let name = "Nitin Kalra";
 		let result = nameValidator(name);
 
 		expect(result).toBe(false);
 	});
 	test("Testing correct format", () => {
-		let name = "Nitin Kalra";
+		let name = "Nitin";
 		let result = nameValidator(name);
 
 		expect(result).toBe(true);
