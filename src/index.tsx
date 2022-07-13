@@ -6,6 +6,7 @@ import App from "App";
 import reportWebVitals from "reportWebVitals";
 import "index.css";
 import { makeServer } from "server";
+import { BrowserRouter } from "react-router-dom";
 
 // Call make Server
 makeServer();
@@ -16,7 +17,9 @@ const root = createRoot(container);
 root.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<App />
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
 		</Provider>
 	</React.StrictMode>
 );
