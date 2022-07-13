@@ -23,7 +23,7 @@ const Header = ({ darkMode, setDarkMode }: headerTypes): JSX.Element => {
 
 			<div
 				onClick={() => themeHandler()}
-				className="text-2xl ml-auto mr-4 cursor-pointer text-gray-400 hover:text-slate-700 dark:text-slate-300 dark:hover:text-white"
+				className="text-2xl ml-auto mr-4 cursor-pointer text-orange-300 hover:text-slate-700 dark:text-orange-300 dark:hover:text-white"
 			>
 				<FontAwesomeIcon icon={darkMode ? faMoon : faSun} />
 			</div>

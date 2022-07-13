@@ -239,7 +239,7 @@ const Signup = (): JSX.Element => {
 						<label htmlFor="tnc">I accept all terms & conditions</label>
 					</div>
 					<div>
-						<button className="w-full text-center p-2 mt-8 bg-black hover:bg-slate-600 text-white dark:bg-slate-100 dark:text-black">
+						<button className="w-full text-center p-2 mt-8 bg-orange-600 hover:bg-orange-400 text-white">
 							Sign-Up
 						</button>
 						<p
