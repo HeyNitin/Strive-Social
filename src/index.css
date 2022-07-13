@@ -1,3 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round";
+
+:root {
+	font-size: 7px;
+}
+
 .Toastify__toast-container--top-right {
 	top: 6rem;
 	right: 1rem;
@@ -6,4 +16,57 @@
 .dark .Toastify__toast-theme--light {
 	background-color: black;
 	color: white;
+}
+
+.active {
+	border-bottom: 1px solid black;
+}
+
+.dark .active {
+	border-bottom: 1px solid white;
+}
+
+@media screen and (min-width: 300px) {
+	:root {
+		font-size: 9px;
+	}
+}
+@media screen and (min-width: 400px) {
+	:root {
+		font-size: 10px;
+	}
+}
+
+@media screen and (min-width: 540px) {
+	:root {
+		font-size: 12px;
+	}
+}
+@media screen and (min-width: 769px) {
+	:root {
+		font-size: 14px;
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	:root {
+		font-size: 16px;
+	}
+}
+
+@media screen and (min-width: 1580px) {
+	:root {
+		font-size: 20px;
+	}
+}
+
+@media screen and (min-width: 1780px) {
+	:root {
+		font-size: 24px;
+	}
+}
+@media screen and (min-width: 2080px) {
+	:root {
+		font-size: 28px;
+	}
 }
