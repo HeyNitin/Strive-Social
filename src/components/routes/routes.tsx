@@ -12,7 +12,7 @@ import RequireNoAuth from "components/auth/requireNoAuth";
 
 const Routes = (): JSX.Element => {
 	return (
-		<div className=" min-h-[calc(100vh -5rem)] dark:bg-darkLight dark:text-white">
+		<div className=" min-h-[calc(100vh-5rem)] dark:bg-darkLight dark:text-white">
 			<R>
 				<Route
 					path="/"

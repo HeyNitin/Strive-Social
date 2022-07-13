@@ -1,8 +1,12 @@
 import { Footer } from "components/footer/footer";
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 
 const Homepage = (): JSX.Element => {
 	const Navigate = useNavigate();
+
+	useDocumentTitle("Homepage");
+
 	return (
 		<div className=" min-h-[calc(100vh-5rem)] flex flex-col">
 			<div className="grid sm:grid-cols-2 min-h-[calc(100vh-12rem)] items-center">
