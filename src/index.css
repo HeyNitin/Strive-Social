@@ -24,6 +24,16 @@
 
 .dark .active {
 	border-bottom: 1px solid white;
+	font-weight: bold;
+}
+
+.sidebar .active {
+	border-bottom: none;
+	font-weight: bold;
+}
+
+.dark .sidebar .active {
+	border-bottom: none;
 }
 
 @media screen and (min-width: 300px) {
