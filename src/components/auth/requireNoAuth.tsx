@@ -17,7 +17,6 @@ const RequireNoAuth = ({ children }: { children: ReactNode }): JSX.Element => {
 		(async () => {
 			if (res) {
 				let user = JSON.parse(res);
-				console.log(user);
 				Dispatch(setToken(user.token));
 				try {
 					const response = await axios.get(`/api/users/${user.id}`, {
@@ -25,7 +24,6 @@ const RequireNoAuth = ({ children }: { children: ReactNode }): JSX.Element => {
 					});
 					Dispatch(setLoggedInUser(response.data.user));
 				} catch (error) {
-					console.log(error);
 					showToast("error", "Something went wrong");
 				}
 			}
