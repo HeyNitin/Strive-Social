@@ -73,11 +73,9 @@ const SearchComponent = ({ users }: { users: userData[] }): JSX.Element => {
 							))}
 						</>
 					) : (
-						notFound && (
-							<p className="w-72 text-center my-4 font-semibold">
-								No users found !
-							</p>
-						)
+						<p className="w-72 text-center my-4 font-semibold">
+							{notFound ? "No users found !" : "Loading..."}
+						</p>
 					))}
 			</div>
 		</div>
