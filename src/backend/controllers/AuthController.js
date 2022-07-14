@@ -42,10 +42,10 @@ export const signupHandler = function (schema, request) {
 			);
 		}
 
-		const _id = uuid();
+		const id = uuid();
 
 		const newUser = {
-			_id,
+			id,
 			createdAt: formatDate(),
 			updatedAt: formatDate(),
 			username,
@@ -57,7 +57,7 @@ export const signupHandler = function (schema, request) {
 		};
 		const createdUser = schema.users.create(newUser);
 		const encodedToken = sign(
-			{ _id, username },
+			{ id, username },
 			process.env.REACT_APP_JWT_SECRET
 		);
 		return new Response(201, {}, { createdUser, encodedToken });
@@ -95,7 +95,7 @@ export const loginHandler = function (schema, request) {
 		}
 		if (password === foundUser.password) {
 			const encodedToken = sign(
-				{ _id: foundUser._id, username },
+				{ id: foundUser.id, username },
 				process.env.REACT_APP_JWT_SECRET
 			);
 			return new Response(200, {}, { foundUser, encodedToken });

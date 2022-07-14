@@ -14,7 +14,7 @@ import { v4 as uuid } from "uuid";
 export const getPostCommentsHandler = function (schema, request) {
 	const postId = request.params.postId;
 	try {
-		const post = schema.posts.findBy({ _id: postId }).attrs;
+		const post = schema.posts.findBy({ id: postId }).attrs;
 		return new Response(200, {}, { comments: post.comments });
 	} catch (error) {
 		return new Response(
@@ -50,16 +50,16 @@ export const addPostCommentHandler = function (schema, request) {
 		const { commentData } = JSON.parse(request.requestBody);
 
 		const comment = {
-			_id: uuid(),
+			id: uuid(),
 			text: commentData,
 			username: user.username,
 			votes: { upvotedBy: [], downvotedBy: [] },
 			createdAt: formatDate(),
 			updatedAt: formatDate(),
 		};
-		const post = schema.posts.findBy({ _id: postId }).attrs;
+		const post = schema.posts.findBy({ id: postId }).attrs;
 		post.comments.push(comment);
-		this.db.posts.update({ _id: postId }, post);
+		this.db.posts.update({ id: postId }, post);
 		return new Response(201, {}, { posts: this.db.posts });
 	} catch (error) {
 		return new Response(
@@ -93,9 +93,9 @@ export const editPostCommentHandler = function (schema, request) {
 		}
 		const { postId, commentId } = request.params;
 		const { commentData } = JSON.parse(request.requestBody);
-		const post = schema.posts.findBy({ _id: postId }).attrs;
+		const post = schema.posts.findBy({ id: postId }).attrs;
 		const commentIndex = post.comments.findIndex(
-			(comment) => comment._id === commentId
+			(comment) => comment.id === commentId
 		);
 		if (post.comments[commentIndex].username !== user.username) {
 			return new Response(
@@ -109,7 +109,7 @@ export const editPostCommentHandler = function (schema, request) {
 			...commentData,
 			updatedAt: formatDate(),
 		};
-		this.db.posts.update({ _id: postId }, post);
+		this.db.posts.update({ id: postId }, post);
 		return new Response(201, {}, { comments: post.comments });
 	} catch (error) {
 		return new Response(
@@ -142,9 +142,9 @@ export const deletePostCommentHandler = function (schema, request) {
 			);
 		}
 		const { postId, commentId } = request.params;
-		const post = schema.posts.findBy({ _id: postId }).attrs;
+		const post = schema.posts.findBy({ id: postId }).attrs;
 		const commentIndex = post.comments.findIndex(
-			(comment) => comment._id === commentId
+			(comment) => comment.id === commentId
 		);
 		if (
 			post.comments[commentIndex].username !== user.username &&
@@ -156,10 +156,8 @@ export const deletePostCommentHandler = function (schema, request) {
 				{ errors: ["Cannot delete a comment doesn't belong to the User."] }
 			);
 		}
-		post.comments = post.comments.filter(
-			(comment) => comment._id !== commentId
-		);
-		this.db.posts.update({ _id: postId }, post);
+		post.comments = post.comments.filter((comment) => comment.id !== commentId);
+		this.db.posts.update({ id: postId }, post);
 		return new Response(201, {}, { comments: post.comments });
 	} catch (error) {
 		return new Response(
@@ -193,14 +191,14 @@ export const upvotePostCommentHandler = function (schema, request) {
 		}
 		const { postId, commentId } = request.params;
 
-		const post = schema.posts.findBy({ _id: postId }).attrs;
+		const post = schema.posts.findBy({ id: postId }).attrs;
 		const commentIndex = post.comments.findIndex(
-			(comment) => comment._id === commentId
+			(comment) => comment.id === commentId
 		);
 
 		if (
 			post.comments[commentIndex].votes.upvotedBy.some(
-				(currUser) => currUser._id === user._id
+				(currUser) => currUser.id === user.id
 			)
 		) {
 			return new Response(
@@ -211,9 +209,9 @@ export const upvotePostCommentHandler = function (schema, request) {
 		}
 		post.comments[commentIndex].votes.downvotedBy = post.comments[
 			commentIndex
-		].votes.downvotedBy.filter((currUser) => currUser._id !== user._id);
+		].votes.downvotedBy.filter((currUser) => currUser.id !== user.id);
 		post.comments[commentIndex].votes.upvotedBy.push(user);
-		this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
+		this.db.posts.update({ id: postId }, { ...post, updatedAt: formatDate() });
 		return new Response(201, {}, { posts: this.db.posts });
 	} catch (error) {
 		return new Response(
@@ -247,13 +245,13 @@ export const downvotePostCommentHandler = function (schema, request) {
 		}
 		const { postId, commentId } = request.params;
 
-		const post = schema.posts.findBy({ _id: postId }).attrs;
+		const post = schema.posts.findBy({ id: postId }).attrs;
 		const commentIndex = post.comments.findIndex(
-			(comment) => comment._id === commentId
+			(comment) => comment.id === commentId
 		);
 		if (
 			post.comments[commentIndex].votes.downvotedBy.some(
-				(currUser) => currUser._id === user._id
+				(currUser) => currUser.id === user.id
 			)
 		) {
 			return new Response(
@@ -264,9 +262,9 @@ export const downvotePostCommentHandler = function (schema, request) {
 		}
 		post.comments[commentIndex].votes.upvotedBy = post.comments[
 			commentIndex
-		].votes.upvotedBy.filter((currUser) => currUser._id !== user._id);
+		].votes.upvotedBy.filter((currUser) => currUser.id !== user.id);
 		post.comments[commentIndex].votes.downvotedBy.push(user);
-		this.db.posts.update({ _id: postId }, { ...post, updatedAt: formatDate() });
+		this.db.posts.update({ id: postId }, { ...post, updatedAt: formatDate() });
 		return new Response(201, {}, { posts: this.db.posts });
 	} catch (error) {
 		return new Response(

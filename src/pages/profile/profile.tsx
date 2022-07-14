@@ -1,5 +1,13 @@
+import { Sidebar } from "components/sidebar/sidebar";
+
 const Profile = (): JSX.Element => {
-	return <div>This is Profile</div>;
+	return (
+		<div className="mx-40">
+			<div>
+				<Sidebar />
+			</div>
+		</div>
+	);
 };
 
 export { Profile };

@@ -1,5 +1,6 @@
 import { Routes as R, Route } from "react-router-dom";
 import { Homepage } from "pages/homepage/homepage";
+import { Landingpage } from "pages/landingpage/landingpage";
 import { Explore } from "pages/explore/explore";
 import { Notifications } from "pages/notifications/notifications";
 import { Bookmarks } from "pages/bookmarks/bookmarks";
@@ -18,8 +19,16 @@ const Routes = (): JSX.Element => {
 					path="/"
 					element={
 						<RequireNoAuth>
-							<Homepage />
+							<Landingpage />
 						</RequireNoAuth>
+					}
+				/>
+				<Route
+					path="/homepage"
+					element={
+						<RequireAuth>
+							<Homepage />
+						</RequireAuth>
 					}
 				/>
 				<Route
@@ -48,6 +57,14 @@ const Routes = (): JSX.Element => {
 				/>
 				<Route
 					path="/profile"
+					element={
+						<RequireAuth>
+							<Profile />
+						</RequireAuth>
+					}
+				/>
+				<Route
+					path="/profile/:userID"
 					element={
 						<RequireAuth>
 							<Profile />
