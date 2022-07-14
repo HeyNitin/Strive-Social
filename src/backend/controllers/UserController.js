@@ -219,11 +219,11 @@ export const followUserHandler = function (schema, request) {
 
 		const updatedUser = {
 			...user,
-			following: [...user.following, { ...followUser }],
+			following: [...user.following, followUser.username],
 		};
 		const updatedFollowUser = {
 			...followUser,
-			followers: [...followUser.followers, { ...user }],
+			followers: [...followUser.followers, user.username],
 		};
 		this.db.users.update(
 			{ id: user.id },

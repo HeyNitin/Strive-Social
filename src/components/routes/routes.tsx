@@ -64,6 +64,14 @@ const Routes = (): JSX.Element => {
 					}
 				/>
 				<Route
+					path="/profile/:userID"
+					element={
+						<RequireAuth>
+							<Profile />
+						</RequireAuth>
+					}
+				/>
+				<Route
 					path="/login"
 					element={
 						<RequireNoAuth>

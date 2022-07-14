@@ -14,6 +14,7 @@ export type userData = {
 	followers: [];
 	following: [];
 	bookmarks: [];
+	profilePicture: string;
 	createdAt: string;
 	updatedAt: string;
 };
@@ -27,6 +28,7 @@ const initialState: initialStateTypes = {
 		followers: [],
 		following: [],
 		id: "",
+		profilePicture: "",
 		lastName: "",
 		password: "",
 		updatedAt: "",
