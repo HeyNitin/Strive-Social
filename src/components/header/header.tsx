@@ -18,12 +18,12 @@ const Header = ({ darkMode, setDarkMode }: headerTypes): JSX.Element => {
 	return (
 		<header className="bg-white drop-shadow-md dark:bg-darkCol dark:text-white h-20 flex p-4 items-baseline sticky min-w-full top-0 z-30">
 			<NavLink to={"/"} className="text-3xl font-bold cursor-pointer">
-				Strive Social
+				<span className="text-orange-500">Strive</span> Social
 			</NavLink>
 
 			<div
 				onClick={() => themeHandler()}
-				className="text-2xl ml-auto cursor-pointer text-gray-400 hover:text-slate-700 dark:text-slate-300 dark:hover:text-white"
+				className="text-2xl ml-auto mr-4 cursor-pointer text-orange-300 hover:text-slate-700 dark:text-orange-300 dark:hover:text-white"
 			>
 				<FontAwesomeIcon icon={darkMode ? faMoon : faSun} />
 			</div>
