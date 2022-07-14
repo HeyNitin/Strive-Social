@@ -11,7 +11,7 @@ import {
 	passwordValidator,
 } from "services/validatorServices";
 import { useAppDispatch } from "appRedux/hooks";
-import { setToken } from "appRedux/userSlice";
+import { setLoggedInUser, setToken } from "appRedux/userSlice";
 
 const initialValue: signupInitialValueTypes = {
 	firstName: "",
@@ -112,6 +112,7 @@ const Signup = (): JSX.Element => {
 				switch (res.status) {
 					case 201:
 						Dispatch(setToken(res.data.encodedToken));
+						Dispatch(setLoggedInUser(res.data.foundUser));
 						showToast("success", "You're successfully Signed Up");
 						break;
 

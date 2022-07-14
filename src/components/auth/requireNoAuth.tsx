@@ -1,17 +1,36 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "appRedux/hooks";
-import { setToken } from "appRedux/userSlice";
+import { setLoggedInUser, setToken } from "appRedux/userSlice";
+import { showToast } from "components/toast/toast";
+import axios from "axios";
 
 const RequireNoAuth = ({ children }: { children: ReactNode }): JSX.Element => {
 	const { token } = useAppSelector((store) => store.userData);
-	const res = localStorage.getItem("token");
+	const res = useMemo(() => localStorage.getItem("user"), []);
 	const location = useLocation();
 	const Dispatch = useAppDispatch();
 
 	const state = location?.state as { from: { pathname: string } };
 
-	res && Dispatch(setToken(res));
+	useEffect(() => {
+		(async () => {
+			if (res) {
+				let user = JSON.parse(res);
+				console.log(user);
+				Dispatch(setToken(user.token));
+				try {
+					const response = await axios.get(`/api/users/${user.id}`, {
+						headers: { authorization: user.token },
+					});
+					Dispatch(setLoggedInUser(response.data.user));
+				} catch (error) {
+					console.log(error);
+					showToast("error", "Something went wrong");
+				}
+			}
+		})();
+	}, [Dispatch, res]);
 
 	return (
 		<>

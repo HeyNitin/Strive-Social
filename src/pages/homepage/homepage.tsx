@@ -6,11 +6,11 @@ const Homepage = (): JSX.Element => {
 	useDocumentTitle("Home");
 
 	return (
-		<div className="mx-40">
+		<div className="mx-32 flex gap-12 p-8">
 			<div>
 				<Sidebar />
 			</div>
-			<div></div>
+			<div className="grow">this is posts</div>
 			<div>
 				<FollowUsersComponent />
 			</div>

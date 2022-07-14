@@ -17,13 +17,13 @@ const Sidebar = (): JSX.Element => {
 
 	const logoutHandler = () => {
 		Dispatch(setToken(""));
-		localStorage.removeItem("token");
+		localStorage.removeItem("user");
 		Navigate("/");
 		showToast("success", "You're successfully logged out");
 	};
 
 	return (
-		<aside className="sidebar hidden dark:bg-darker shadow-footer fixed h-4/5 w-60 py-8 px-4 lg:flex flex-col gap-4 my-12">
+		<aside className="sidebar hidden dark:bg-darker shadow-footer min-h-full w-60 py-8 px-4 lg:flex flex-col gap-4 my-12">
 			<NavLink to={"/homepage"}>
 				<div
 					className={

@@ -5,7 +5,7 @@ import { showToast } from "components/toast/toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loginReducer } from "pages/login/loginReducer";
 import { loginInitialValueTypes } from "pages/login/loginTypes.type";
-import { setToken } from "appRedux/userSlice";
+import { setLoggedInUser, setToken } from "appRedux/userSlice";
 import { useAppDispatch } from "appRedux/hooks";
 
 const initialValue: loginInitialValueTypes = {
@@ -32,9 +32,16 @@ const Login = (): JSX.Element => {
 					password: state.password,
 				});
 				Dispatch(setToken(data.encodedToken));
+				Dispatch(setLoggedInUser(data.foundUser));
 				switch (state.rememberMe) {
 					case true:
-						localStorage.setItem("token", JSON.stringify(data.encodedToken));
+						localStorage.setItem(
+							"user",
+							JSON.stringify({
+								id: data.foundUser.id,
+								token: data.encodedToken,
+							})
+						);
 						break;
 
 					default:
