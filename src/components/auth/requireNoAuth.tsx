@@ -17,7 +17,7 @@ const RequireNoAuth = ({ children }: { children: ReactNode }): JSX.Element => {
 		<>
 			{res || token ? (
 				<Navigate
-					to={state?.from?.pathname || "/explore"}
+					to={state?.from?.pathname || "/homepage"}
 					state={{ from: location }}
 					replace={true}
 				/>
