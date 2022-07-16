@@ -1,4 +1,6 @@
-import { useAppSelector } from "appRedux/hooks"
+import { useAppDispatch, useAppSelector } from "appRedux/hooks"
+import { setPosts } from "appRedux/postSlice";
+import axios from "axios";
 import { showToast } from "components/toast/toast";
 import { useEffect, useRef, useState } from "react";
 
@@ -21,11 +23,12 @@ const emojiArray = [
     "♻",
 ];
 const AddPosts = (): JSX.Element => {
-    const { loggedInUser } = useAppSelector(store => store.userData)
+    const { loggedInUser, token } = useAppSelector(store => store.userData)
     const [showEmoji, setShowEmoji] = useState<boolean>(false)
     const [textArea, setTextArea] = useState<string>('')
     const emojiRef = useRef<HTMLDivElement>(null);
     const showEmojiRef = useRef<HTMLDivElement>(null);
+    const Dispatch = useAppDispatch()
 
 
     useEffect(() => {
@@ -44,6 +47,19 @@ const AddPosts = (): JSX.Element => {
         };
     }, [emojiRef, showEmojiRef]);
 
+    const addPost = async () => {
+
+        try {
+            const res = await axios.post('/api/posts', { "content": textArea }, { headers: { authorization: token } })
+            Dispatch(setPosts(res.data.posts))
+        }
+        catch (error) {
+            console.log(error)
+            showToast('error', "Something went wrong while trying to post")
+        }
+
+    }
+
 
     return <div className="flex gap-2">
         <img
@@ -51,7 +67,7 @@ const AddPosts = (): JSX.Element => {
             src={loggedInUser.profilePicture}
             alt="profile"
         />
-        <div className=" h-fit w-full flex flex-col gap-1">
+        <div className=" h-fit w-full flex flex-col gap-1 relative">
             <div className=" h-fit w-full border border-orange-500 p-1 rounded-md">
                 <textarea onChange={(e) => setTextArea(e.target.value)} value={textArea} className="w-full outline-none bg-transparent p-2 h-fit scrollber-hide resize-none" placeholder="Write something interesting..." />
                 <div className="flex gap-4 justify-end">
@@ -71,9 +87,10 @@ const AddPosts = (): JSX.Element => {
                 </div>
             </div>
             {showEmoji &&
-                <div ref={emojiRef} className="flex flex-wrap w-40 p-1 rounded-md bg-orange-300 gap-1 self-end">
+                <div ref={emojiRef} className="flex flex-wrap w-56 p-1 rounded-md bg-orange-300 gap-1 self-end absolute bottom-0">
                     {emojiArray.map(emoji => <div key={emoji} onClick={() => setTextArea(prev => prev + emoji)} className="cursor-pointer">{emoji}</div>)}
                 </div>}
+            <button onClick={() => addPost()} className="self-end bg-orange-500 py-1 rounded-md px-2 m-4 w-24">Add post</button>
         </div>
     </div>
 }
