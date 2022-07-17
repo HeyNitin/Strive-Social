@@ -39,13 +39,13 @@ const SearchComponent = ({ users }: { users: userData[] }): JSX.Element => {
 	};
 	return (
 		<div>
-			<div className="border border-orange-500">
+			<div className="border border-orange-500 flex items-center">
 				<FontAwesomeIcon icon={faSearch} className="mx-1" />
 				<input
 					onChange={(e) => searchHandler(e)}
 					type={"search"}
 					value={searchQuery}
-					className="outline-none m-1 w-64 bg-transparent"
+					className="outline-none m-1 grow bg-transparent"
 					placeholder="Search here"
 				/>
 			</div>

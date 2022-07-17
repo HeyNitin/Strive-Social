@@ -23,7 +23,7 @@ const Sidebar = (): JSX.Element => {
 	};
 
 	return (
-		<aside className="sidebar hidden dark:bg-darker shadow-footer min-h-full w-60 py-8 px-4 lg:flex flex-col gap-4 my-12 text-lg">
+		<aside className="sidebar dark:bg-darker shadow-footer h-3/4 w-60 py-8 px-4 flex flex-col gap-4 my-12 text-lg">
 			<NavLink to={"/homepage"}>
 				<div
 					className={

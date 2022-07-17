@@ -34,12 +34,12 @@ const Homepage = (): JSX.Element => {
 
 	return (
 		<div className="mx-32 flex gap-12 p-8">
-			<div>
+			<div className="fixed h-full">
 				<Sidebar />
 			</div>
-			<div className="grow">
+			<div className="w-2/4 ml-auto">
 				<AddPosts />
-				<div className="mt-8 flex flex-col gap-8">
+				<div className=" mt-8 flex flex-col gap-8">
 					{filteredPosts.map(({ id, content, likes, userId, createdAt, comments }) =>
 						<PostCard key={id} id={id} content={content} likes={likes} userId={userId} createdAt={createdAt} comments={comments} />
 					)}
