@@ -1,20 +1,43 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export type userType = {
+	profilePicture: string;
+	firstName: string;
+	lastName: string;
+	username: string;
+	id: string;
+};
+export type likedBy = {
+	profilePicture: string;
+	firstName: string;
+	lastName: string;
+	username: string;
+	id: string;
+};
+
+export type commentedBy = {
+	profilePicture: string;
+	firstName: string;
+	lastName: string;
+	username: string;
+	id: string;
+	comment: string;
+};
+
 export type likesTypes = {
 	likeCount: Number;
-	likedBy: string[];
+	likedBy: likedBy[];
 };
 
 export type commentsTypes = {
 	commentCount: Number;
-	commentedBy: string[];
+	commentedBy: commentedBy[];
 };
 
 export type postTypes = {
 	content: string;
 	id: string;
-	username: string;
-	userId: string;
+	user: userType;
 	likes: likesTypes;
 	comments: commentsTypes;
 	createdAt: string;
@@ -24,10 +47,15 @@ export type postTypes = {
 const post: postTypes = {
 	content: "",
 	id: "",
-	username: "",
-	userId: "",
-	likes: { likeCount: 0, likedBy: [""] },
-	comments: { commentCount: 0, commentedBy: [""] },
+	user: {
+		firstName: "",
+		id: "",
+		lastName: "",
+		profilePicture: "",
+		username: "",
+	},
+	likes: { likeCount: 0, likedBy: [] },
+	comments: { commentCount: 0, commentedBy: [] },
 	createdAt: "",
 	updatedAt: "",
 };

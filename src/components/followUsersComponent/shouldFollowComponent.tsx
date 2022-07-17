@@ -44,7 +44,6 @@ const ShouldFollowComponent = ({
 				{},
 				{ headers: { authorization: token } }
 			);
-			console.log('followUser', res.data)
 			Dispatch(setLoggedInUser(res.data.user));
 			setUsers((prev: userData[]) =>
 				prev.map((item) =>

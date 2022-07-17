@@ -181,11 +181,14 @@ export const likePostHandler = function (schema, request) {
 				{ errors: ["Cannot like a post that is already liked. "] }
 			);
 		}
-		post.likes.dislikedBy = post.likes.dislikedBy.filter(
-			(currUser) => currUser.id !== user.id
-		);
 		post.likes.likeCount += 1;
-		post.likes.likedBy.push(user);
+		post.likes.likedBy.push({
+			username: user.username,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			profilePicture: user.profilePicture,
+			id: user.id,
+		});
 		this.db.posts.update({ id: postId }, { ...post, updatedAt: formatDate() });
 		return new Response(201, {}, { posts: this.db.posts });
 	} catch (error) {
@@ -219,28 +222,26 @@ export const dislikePostHandler = function (schema, request) {
 			);
 		}
 		const postId = request.params.postId;
-		let post = schema.posts.findBy({ id: postId }).attrs;
-		if (post.likes.likeCount === 0) {
+		const post = schema.posts.findBy({ id: postId }).attrs;
+		if (!post.likes.likedBy.some((currUser) => currUser.id === user.id)) {
 			return new Response(
 				400,
 				{},
-				{ errors: ["Cannot decrement like less than 0."] }
-			);
-		}
-		if (post.likes.dislikedBy.some((currUser) => currUser.id === user.id)) {
-			return new Response(
-				400,
-				{},
-				{ errors: ["Cannot dislike a post that is already disliked. "] }
+				{ errors: ["Cannot dislike a post that is not liked. "] }
 			);
 		}
 		post.likes.likeCount -= 1;
 		const updatedLikedBy = post.likes.likedBy.filter(
 			(currUser) => currUser.id !== user.id
 		);
-		post.likes.dislikedBy.push(user);
-		post = { ...post, likes: { ...post.likes, likedBy: updatedLikedBy } };
-		this.db.posts.update({ id: postId }, { ...post, updatedAt: formatDate() });
+		this.db.posts.update(
+			{ id: postId },
+			{
+				...post,
+				likes: { ...post.likes, likedBy: updatedLikedBy },
+				updatedAt: formatDate(),
+			}
+		);
 		return new Response(201, {}, { posts: this.db.posts });
 	} catch (error) {
 		return new Response(

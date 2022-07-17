@@ -30,7 +30,7 @@ const Homepage = (): JSX.Element => {
 
 	}, [Dispatch, token])
 
-	const filteredPosts = useMemo(() => posts.filter(post => loggedInUser.following.filter(user => user.username === post.username).length || post.userId === loggedInUser.id), [posts, loggedInUser.following, loggedInUser.id])
+	const filteredPosts = useMemo(() => posts.filter(post => loggedInUser.following.filter(user => user.username === post.user.username).length || post.user.id === loggedInUser.id), [posts, loggedInUser.following, loggedInUser.id])
 
 	return (
 		<div className="mx-32 flex gap-12 p-8">
@@ -40,8 +40,8 @@ const Homepage = (): JSX.Element => {
 			<div className="w-2/4 ml-auto">
 				<AddPosts />
 				<div className=" mt-8 flex flex-col gap-8">
-					{filteredPosts.map(({ id, content, likes, userId, createdAt, comments }) =>
-						<PostCard key={id} id={id} content={content} likes={likes} userId={userId} createdAt={createdAt} comments={comments} />
+					{filteredPosts.map((post) =>
+						<PostCard key={post.id} post={post} />
 					)}
 
 				</div>
