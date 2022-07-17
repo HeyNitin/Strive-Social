@@ -1,36 +1,85 @@
-import { useAppSelector } from "appRedux/hooks"
-import { commentsTypes, likesTypes } from "appRedux/postSlice"
-import { userData } from "appRedux/userSlice"
+import { useAppDispatch, useAppSelector } from "appRedux/hooks"
+import { postTypes, setPosts } from "appRedux/postSlice"
+import { updateBookmarks } from "appRedux/userSlice"
 import axios from "axios"
 import { showToast } from "components/toast/toast"
 import { useEffect, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: string, content: string, likes: likesTypes, userId: string, createdAt: string, comments: commentsTypes }): JSX.Element => {
-    const { token } = useAppSelector(store => store.userData)
-    const [user, setUser] = useState<userData>()
+const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
+    const { id, content, likes, user, createdAt, comments } = post
+
+    const { token, loggedInUser } = useAppSelector(store => store.userData)
+    const [inLiked, setInLiked] = useState<boolean>(false)
+    const [inBookmark, setInBookmark] = useState<boolean>(false)
     const Navigate = useNavigate()
+    const Dispatch = useAppDispatch()
+
     const postDate = new Date(createdAt);
     const postTime = new Date(createdAt).getTime() / (1000 * 60);
     const today = Date.now() / (1000 * 60);
-
     const timeDifference = useMemo(() => Number((today - postTime).toFixed()), [postTime, today]);
 
     useEffect(() => {
-        (async () => {
+        loggedInUser.bookmarks.some(post => post.id === id) ? setInBookmark(true) : setInBookmark(false)
 
-            try {
-                const res = await axios.get(`/api/users/${userId}`, {
-                    headers: { authorization: token }
-                })
-                setUser(res.data.user)
-            }
-            catch (error) {
-                showToast("error", "Something went wrong while tring to fetch user data")
-            }
-        })()
+    }, [id, loggedInUser.bookmarks])
 
-    }, [token, userId])
+
+    useEffect(() => {
+        console.log('ran', likes.likedBy.some(currUser => currUser.id === loggedInUser.id))
+        likes.likedBy.some(currUser => currUser.id === loggedInUser.id) ? setInLiked(true) : setInLiked(false)
+    }, [likes.likedBy, loggedInUser.id])
+
+    const addToLiked = async () => {
+        try {
+            const res = await axios.post(`/api/posts/like/${id}`, {}, {
+                headers: { authorization: token }
+            })
+
+            Dispatch(setPosts(res.data.posts))
+        }
+        catch (error) {
+            showToast('error', "Couldn't like the post")
+        }
+    }
+
+    const removeFromLiked = async () => {
+        try {
+            const res = await axios.post(`/api/posts/dislike/${id}`, {}, {
+                headers: { authorization: token }
+            })
+            console.log(res)
+            Dispatch(setPosts(res.data.posts))
+        }
+        catch (error) {
+            showToast('error', "Couldn't dislike the post")
+        }
+    }
+
+    const addToBookmark = async () => {
+        try {
+            const res = await axios.post(`/api/users/bookmark/${id}`, {}, {
+                headers: { authorization: token }
+            })
+            Dispatch(updateBookmarks(res.data.bookmarks))
+        }
+        catch (error) {
+            showToast('error', "Something went wrong while trying to add product to bookmarks")
+        }
+    }
+
+    const removeFromBookmark = async () => {
+        try {
+            const res = await axios.post(`/api/users/remove-bookmark/${id}`, {}, {
+                headers: { authorization: token }
+            })
+            Dispatch(updateBookmarks(res.data.bookmarks))
+        }
+        catch (error) {
+            showToast('error', "Something went wrong while trying to remove product from bookmarks")
+        }
+    }
 
     return <div key={id} className="shadow-card flex gap-4 p-2 relative pb-10">
 
@@ -56,9 +105,9 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
             </div>
             <p className="flex flex-wrap mt-4">{content}</p>
             <div className="absolute bottom-2 right-2 flex mt-2 gap-4">
-                <div className="flex items-center gap-1 cursor-pointer">
+                <div onClick={() => inLiked ? removeFromLiked() : addToLiked()} className="flex items-center gap-1 cursor-pointer">
                     <span className="material-icons-outlined">
-                        favorite_border
+                        {inLiked ? "favorite" : "favorite_border"}
                     </span>
                     <p className="text-xl">{likes.likeCount?.toString() || 0}</p>
                 </div>
@@ -68,9 +117,9 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
                     </span>
                     <p className="text-xl">{comments.commentCount?.toString() || 0}</p>
                 </div>
-                <div className="flex items-center gap-1 cursor-pointer">
+                <div onClick={() => inBookmark ? removeFromBookmark() : addToBookmark()} className="flex items-center gap-1 cursor-pointer">
                     <span className="material-icons-outlined">
-                        bookmark
+                        {inBookmark ? "bookmark" : "bookmark_border"}
                     </span>
                 </div>
             </div>
