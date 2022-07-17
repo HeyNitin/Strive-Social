@@ -6,7 +6,7 @@ import { formatDate } from "../utils/authUtils";
 
 export const users = [
 	{
-		id: 101,
+		id: "101",
 		firstName: "Nitin",
 		lastName: "Kalra",
 		username: "heynitin",
@@ -18,7 +18,7 @@ export const users = [
 		updatedAt: formatDate(),
 	},
 	{
-		id: 102,
+		id: "102",
 		firstName: "Naval",
 		lastName: "Ravikant",
 		username: "naval",
@@ -30,7 +30,7 @@ export const users = [
 		updatedAt: formatDate(),
 	},
 	{
-		id: 103,
+		id: "103",
 		firstName: "Kunal",
 		lastName: "Shah",
 		username: "kunalb11",
@@ -42,7 +42,7 @@ export const users = [
 		updatedAt: formatDate(),
 	},
 	{
-		id: 104,
+		id: "104",
 		firstName: "Jose",
 		lastName: "cayasso",
 		username: "cayahere",
@@ -54,7 +54,7 @@ export const users = [
 		updatedAt: formatDate(),
 	},
 	{
-		id: 105,
+		id: "105",
 		firstName: "John",
 		lastName: "Cena",
 		username: "youcantreadthis",
@@ -66,7 +66,7 @@ export const users = [
 		updatedAt: formatDate(),
 	},
 	{
-		id: 106,
+		id: "106",
 		firstName: "Jethalal",
 		lastName: "Gada",
 		username: "jalebifafda",
@@ -78,7 +78,7 @@ export const users = [
 		updatedAt: formatDate(),
 	},
 	{
-		id: 107,
+		id: "107",
 		firstName: "Nobita",
 		lastName: "Nobi",
 		username: "doremonadmirer",
@@ -90,7 +90,7 @@ export const users = [
 		updatedAt: formatDate(),
 	},
 	{
-		id: 108,
+		id: "108",
 		firstName: "Doremon",
 		lastName: "The Robot",
 		username: "doremon",

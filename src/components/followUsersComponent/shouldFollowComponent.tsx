@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -37,8 +37,7 @@ const ShouldFollowComponent = ({
 		}, 500);
 	}, []);
 
-	const followUserHandler = async (e: MouseEvent, id: string) => {
-		e.stopPropagation();
+	const followUserHandler = async (id: string) => {
 		try {
 			const res = await axios.post(
 				`/api/users/follow/${id}`,
@@ -63,9 +62,8 @@ const ShouldFollowComponent = ({
 			{finalUserlist.length > 0 ? (
 				finalUserlist.map((user) => (
 					<div
-						onClick={() => Navigate(`/profile/${user.id}`)}
 						key={user.id}
-						className="flex gap-2 my-2 border border-orange-500 items-center p-1 rounded-md w-72 cursor-pointer"
+						className="flex gap-2 my-2 border border-orange-500 items-center p-1 rounded-md w-72"
 					>
 						<img
 							className="rounded-full h-10"
@@ -74,10 +72,15 @@ const ShouldFollowComponent = ({
 						/>
 						<div>
 							<p>{user.firstName + " " + user.lastName}</p>
-							<p className="text-gray-400">@{user.username}</p>
+							<p
+								onClick={() => Navigate(`/profile/${user.id}`)}
+								className="text-gray-400 cursor-pointer hover:underline"
+							>
+								@{user.username}
+							</p>
 						</div>
 						<div
-							onClick={(e) => followUserHandler(e, user.id)}
+							onClick={() => followUserHandler(user.id)}
 							className="flex items-center ml-auto cursor-pointer text-orange-500"
 						>
 							<p>Follow</p>

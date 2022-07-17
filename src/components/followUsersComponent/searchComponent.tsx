@@ -39,13 +39,13 @@ const SearchComponent = ({ users }: { users: userData[] }): JSX.Element => {
 	};
 	return (
 		<div>
-			<div className="border border-orange-500">
+			<div className="border border-orange-500 flex items-center">
 				<FontAwesomeIcon icon={faSearch} className="mx-1" />
 				<input
 					onChange={(e) => searchHandler(e)}
 					type={"search"}
 					value={searchQuery}
-					className="outline-none m-1 w-64 bg-transparent"
+					className="outline-none m-1 grow bg-transparent"
 					placeholder="Search here"
 				/>
 			</div>
@@ -56,9 +56,8 @@ const SearchComponent = ({ users }: { users: userData[] }): JSX.Element => {
 							<p className="font-semibold my-4 text-lg">Search Results</p>
 							{searchedUsers.map((user) => (
 								<div
-									onClick={() => Navigate(`/profile/${user.id}`)}
 									key={user.id}
-									className="flex gap-2 my-2 border border-orange-500 items-center p-1 rounded-md w-72 cursor-pointer"
+									className="flex gap-2 my-2 border border-orange-500 items-center p-1 rounded-md w-72"
 								>
 									<img
 										className="rounded-full h-10"
@@ -67,7 +66,12 @@ const SearchComponent = ({ users }: { users: userData[] }): JSX.Element => {
 									/>
 									<div>
 										<p>{user.firstName + " " + user.lastName}</p>
-										<p className="text-gray-400">@{user.username}</p>
+										<p
+											onClick={() => Navigate(`/profile/${user.id}`)}
+											className="text-gray-400 cursor-pointer hover:underline"
+										>
+											@{user.username}
+										</p>
 									</div>
 								</div>
 							))}

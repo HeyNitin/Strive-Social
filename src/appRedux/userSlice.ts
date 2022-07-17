@@ -11,9 +11,9 @@ export type userData = {
 	lastName: string;
 	username: String;
 	password: string;
-	followers: [];
-	following: [];
-	bookmarks: [];
+	followers: string[];
+	following: string[];
+	bookmarks: string[];
 	profilePicture: string;
 	createdAt: string;
 	updatedAt: string;
