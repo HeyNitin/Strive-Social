@@ -50,15 +50,18 @@ export const addPostCommentHandler = function (schema, request) {
 		const { commentData } = JSON.parse(request.requestBody);
 
 		const comment = {
-			id: uuid(),
-			text: commentData,
+			commentId: uuid(),
+			comment: commentData,
 			username: user.username,
-			votes: { upvotedBy: [], downvotedBy: [] },
+			firstName: user.firstName,
+			lastName: user.lastName,
+			profilePicture: user.profilePicture,
 			createdAt: formatDate(),
 			updatedAt: formatDate(),
 		};
 		const post = schema.posts.findBy({ id: postId }).attrs;
-		post.comments.push(comment);
+		post.comments.commentCount += 1;
+		post.comments.commentedBy.push(comment);
 		this.db.posts.update({ id: postId }, post);
 		return new Response(201, {}, { posts: this.db.posts });
 	} catch (error) {

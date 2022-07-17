@@ -22,6 +22,7 @@ export type commentedBy = {
 	username: string;
 	id: string;
 	comment: string;
+	commentId: string;
 };
 
 export type likesTypes = {
@@ -69,8 +70,20 @@ const postSlice = createSlice({
 		setPosts: (state, action: { type: string; payload: postTypes[] }) => {
 			state.posts = action.payload;
 		},
+		setComments: (
+			state,
+			action: { type: string; payload: { id: string; comments: commentsTypes } }
+		) => {
+			setPosts(
+				state.posts.map((post) =>
+					post.id === action.payload.id
+						? { ...post, comments: action.payload.comments }
+						: post
+				)
+			);
+		},
 	},
 });
 
 export default postSlice.reducer;
-export const { setPosts } = postSlice.actions;
+export const { setPosts, setComments } = postSlice.actions;

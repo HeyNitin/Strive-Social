@@ -4,6 +4,7 @@ import { Landingpage } from "pages/landingpage/landingpage";
 import { Explore } from "pages/explore/explore";
 import { Notifications } from "pages/notifications/notifications";
 import { Bookmarks } from "pages/bookmarks/bookmarks";
+import { PostPage } from "pages/postPage/postPage";
 import { Profile } from "pages/profile/profile";
 import { Login } from "pages/login/login";
 import { Signup } from "pages/signup/signup";
@@ -52,6 +53,14 @@ const Routes = (): JSX.Element => {
 					element={
 						<RequireAuth>
 							<Bookmarks />
+						</RequireAuth>
+					}
+				/>
+				<Route
+					path="/posts/:postId"
+					element={
+						<RequireAuth>
+							<PostPage />
 						</RequireAuth>
 					}
 				/>

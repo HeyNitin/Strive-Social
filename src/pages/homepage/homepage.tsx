@@ -1,34 +1,14 @@
-import { useAppDispatch, useAppSelector } from "appRedux/hooks";
-import { setPosts } from "appRedux/postSlice";
-import axios from "axios";
+import { useAppSelector } from "appRedux/hooks";
 import { AddPosts } from "components/addPosts/addPosts";
 import { FollowUsersComponent } from "components/followUsersComponent/followUseresComponents";
 import { PostCard } from "components/postCard/postCard";
 import { Sidebar } from "components/sidebar/sidebar";
-import { showToast } from "components/toast/toast";
 import { useDocumentTitle } from "hooks/useDocumentTitle";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 const Homepage = (): JSX.Element => {
 	useDocumentTitle("Home");
-	const { userData: { token, loggedInUser }, posts: { posts } } = useAppSelector(store => store)
-	const Dispatch = useAppDispatch()
-
-	useEffect(() => {
-
-		(async () => {
-			try {
-				const res = await axios.get('/api/posts', {
-					headers: { authorization: token }
-				})
-				Dispatch(setPosts(res.data.posts))
-			}
-			catch (error) {
-				showToast('error', "Something went wrong while trying to load posts")
-			}
-		})()
-
-	}, [Dispatch, token])
+	const { userData: { loggedInUser }, posts: { posts } } = useAppSelector(store => store)
 
 	const filteredPosts = useMemo(() => posts.filter(post => loggedInUser.following.filter(user => user.username === post.user.username).length || post.user.id === loggedInUser.id), [posts, loggedInUser.following, loggedInUser.id])
 
