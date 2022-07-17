@@ -1,16 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type likesTypes = {
+export type likesTypes = {
 	likeCount: Number;
 	likedBy: string[];
 	dislikedBy: string[];
+};
+
+export type commentsTypes = {
+	commentCount: Number;
+	commentedBy: string[];
 };
 
 type postTypes = {
 	content: string;
 	id: string;
 	username: string;
+	userId: string;
 	likes: likesTypes;
+	comments: commentsTypes;
 	createdAt: string;
 	updatedAt: string;
 };
@@ -19,7 +26,9 @@ const post: postTypes = {
 	content: "",
 	id: "",
 	username: "",
+	userId: "",
 	likes: { likeCount: 0, likedBy: [""], dislikedBy: [""] },
+	comments: { commentCount: 0, commentedBy: [""] },
 	createdAt: "",
 	updatedAt: "",
 };
