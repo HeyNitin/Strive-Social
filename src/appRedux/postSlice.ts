@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 export type likesTypes = {
 	likeCount: Number;
 	likedBy: string[];
-	dislikedBy: string[];
 };
 
 export type commentsTypes = {
@@ -27,7 +26,7 @@ const post: postTypes = {
 	id: "",
 	username: "",
 	userId: "",
-	likes: { likeCount: 0, likedBy: [""], dislikedBy: [""] },
+	likes: { likeCount: 0, likedBy: [""] },
 	comments: { commentCount: 0, commentedBy: [""] },
 	createdAt: "",
 	updatedAt: "",

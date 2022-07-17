@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { setLoggedInUser, userData } from "appRedux/userSlice";
+import { follow, setLoggedInUser, userData } from "appRedux/userSlice";
 import { useAppDispatch, useAppSelector } from "appRedux/hooks";
 import axios from "axios";
 import { showToast } from "components/toast/toast";
@@ -25,7 +25,7 @@ const ShouldFollowComponent = ({
 			.filter(
 				(user) =>
 					user.id !== loggedInUser.id &&
-					!loggedInUser.following.find((item: string) => item === user.username)
+					!loggedInUser.following.find((item: follow) => item.username === user.username)
 			)
 			.slice(0, 3);
 		return result;
@@ -44,6 +44,7 @@ const ShouldFollowComponent = ({
 				{},
 				{ headers: { authorization: token } }
 			);
+			console.log('followUser', res.data)
 			Dispatch(setLoggedInUser(res.data.user));
 			setUsers((prev: userData[]) =>
 				prev.map((item) =>

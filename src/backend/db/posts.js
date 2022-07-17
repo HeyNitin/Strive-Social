@@ -13,7 +13,6 @@ export const posts = [
 		likes: {
 			likeCount: 2,
 			likedBy: [],
-			dislikedBy: [],
 		},
 		comments: {
 			commentCount: 0,
@@ -31,7 +30,6 @@ export const posts = [
 		likes: {
 			likeCount: 3,
 			likedBy: [],
-			dislikedBy: [],
 		},
 		comments: {
 			commentCount: 0,

@@ -9,18 +9,18 @@ import { useNavigate } from "react-router-dom"
 const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: string, content: string, likes: likesTypes, userId: string, createdAt: string, comments: commentsTypes }): JSX.Element => {
     const { token, loggedInUser } = useAppSelector(store => store.userData)
     const [user, setUser] = useState<userData>()
+    const [inLiked, setInLiked] = useState<boolean>(false)
     const [inBookmark, setInBookmark] = useState<boolean>(false)
     const Navigate = useNavigate()
+    const Dispatch = useAppDispatch()
+
     const postDate = new Date(createdAt);
     const postTime = new Date(createdAt).getTime() / (1000 * 60);
     const today = Date.now() / (1000 * 60);
-    const Dispatch = useAppDispatch()
-
     const timeDifference = useMemo(() => Number((today - postTime).toFixed()), [postTime, today]);
 
     useEffect(() => {
         (async () => {
-
             try {
                 const res = await axios.get(`/api/users/${userId}`, {
                     headers: { authorization: token }
@@ -31,7 +31,6 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
                 showToast("error", "Something went wrong while tring to fetch user data")
             }
         })()
-
     }, [token, userId])
 
     useEffect(() => {
@@ -39,8 +38,34 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
 
     }, [id, loggedInUser.bookmarks])
 
-    const addToBookmark = async () => {
 
+    const addToLiked = async () => {
+        try {
+            const res = await axios.post(`/api/posts/like/${id}`, {}, {
+                headers: { authorization: token }
+            })
+            console.log(res)
+            setInLiked(true)
+        }
+        catch (error) {
+            showToast('error', "Couldn't like the post")
+        }
+    }
+
+    const removeFromLiked = async () => {
+        try {
+            const res = await axios.post(`/api/posts/dislike/${id}`, {}, {
+                headers: { authorization: token }
+            })
+            console.log(res)
+            setInLiked(false)
+        }
+        catch (error) {
+            showToast('error', "Couldn't like the post")
+        }
+    }
+
+    const addToBookmark = async () => {
         try {
             const res = await axios.post(`/api/users/bookmark/${id}`, {}, {
                 headers: { authorization: token }
@@ -53,7 +78,6 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
     }
 
     const removeFromBookmark = async () => {
-
         try {
             const res = await axios.post(`/api/users/remove-bookmark/${id}`, {}, {
                 headers: { authorization: token }
@@ -89,9 +113,9 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
             </div>
             <p className="flex flex-wrap mt-4">{content}</p>
             <div className="absolute bottom-2 right-2 flex mt-2 gap-4">
-                <div className="flex items-center gap-1 cursor-pointer">
+                <div onClick={() => inLiked ? removeFromLiked() : addToLiked()} className="flex items-center gap-1 cursor-pointer">
                     <span className="material-icons-outlined">
-                        favorite_border
+                        {inLiked ? "favorite" : "favorite_border"}
                     </span>
                     <p className="text-xl">{likes.likeCount?.toString() || 0}</p>
                 </div>

@@ -30,7 +30,7 @@ const Homepage = (): JSX.Element => {
 
 	}, [Dispatch, token])
 
-	const filteredPosts = useMemo(() => posts.filter(post => loggedInUser.following.includes(post.username) || post.userId === loggedInUser.id), [posts, loggedInUser.following, loggedInUser.id])
+	const filteredPosts = useMemo(() => posts.filter(post => loggedInUser.following.filter(user => user.username === post.username).length || post.userId === loggedInUser.id), [posts, loggedInUser.following, loggedInUser.id])
 
 	return (
 		<div className="mx-32 flex gap-12 p-8">

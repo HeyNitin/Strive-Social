@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postTypes } from "appRedux/postSlice";
 
-type initialStateTypes = {
-	token: string;
-	loggedInUser: userData;
+export type follow = {
+	profilePicture: string;
+	firstName: string;
+	lastName: string;
+	username: string;
+	id: string;
 };
 
 export type userData = {
@@ -12,14 +15,18 @@ export type userData = {
 	lastName: string;
 	username: String;
 	password: string;
-	followers: string[];
-	following: string[];
+	followers: follow[];
+	following: follow[];
 	bookmarks: postTypes[];
 	profilePicture: string;
 	createdAt: string;
 	updatedAt: string;
 };
 
+type initialStateTypes = {
+	token: string;
+	loggedInUser: userData;
+};
 const initialState: initialStateTypes = {
 	token: "",
 	loggedInUser: {
