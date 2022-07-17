@@ -11,7 +11,7 @@ export type commentsTypes = {
 	commentedBy: string[];
 };
 
-type postTypes = {
+export type postTypes = {
 	content: string;
 	id: string;
 	username: string;

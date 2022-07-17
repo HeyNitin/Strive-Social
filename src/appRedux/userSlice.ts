@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { postTypes } from "appRedux/postSlice";
 
 type initialStateTypes = {
 	token: string;
@@ -13,7 +14,7 @@ export type userData = {
 	password: string;
 	followers: string[];
 	following: string[];
-	bookmarks: string[];
+	bookmarks: postTypes[];
 	profilePicture: string;
 	createdAt: string;
 	updatedAt: string;
@@ -46,9 +47,15 @@ const userSlice = createSlice({
 		setLoggedInUser: (state, action: { type: string; payload: userData }) => {
 			state.loggedInUser = action.payload;
 		},
+		updateBookmarks: (
+			state,
+			action: { type: string; payload: postTypes[] }
+		) => {
+			state.loggedInUser.bookmarks = action.payload;
+		},
 	},
 });
 
 export default userSlice.reducer;
 
-export const { setToken, setLoggedInUser } = userSlice.actions;
+export const { setToken, setLoggedInUser, updateBookmarks } = userSlice.actions;

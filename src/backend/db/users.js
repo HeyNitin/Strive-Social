@@ -13,6 +13,7 @@ export const users = [
 		password: "justfortest",
 		following: ["naval", "jalebifafda"],
 		followers: ["naval", "kunalb11", "cayahere"],
+		bookmarks: [],
 		profilePicture: "https://i.postimg.cc/6p1n3fTn/profile-Nitin.jpg",
 		createdAt: formatDate(),
 		updatedAt: formatDate(),

@@ -1,18 +1,20 @@
-import { useAppSelector } from "appRedux/hooks"
+import { useAppDispatch, useAppSelector } from "appRedux/hooks"
 import { commentsTypes, likesTypes } from "appRedux/postSlice"
-import { userData } from "appRedux/userSlice"
+import { updateBookmarks, userData } from "appRedux/userSlice"
 import axios from "axios"
 import { showToast } from "components/toast/toast"
 import { useEffect, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: string, content: string, likes: likesTypes, userId: string, createdAt: string, comments: commentsTypes }): JSX.Element => {
-    const { token } = useAppSelector(store => store.userData)
+    const { token, loggedInUser } = useAppSelector(store => store.userData)
     const [user, setUser] = useState<userData>()
+    const [inBookmark, setInBookmark] = useState<boolean>(false)
     const Navigate = useNavigate()
     const postDate = new Date(createdAt);
     const postTime = new Date(createdAt).getTime() / (1000 * 60);
     const today = Date.now() / (1000 * 60);
+    const Dispatch = useAppDispatch()
 
     const timeDifference = useMemo(() => Number((today - postTime).toFixed()), [postTime, today]);
 
@@ -31,6 +33,37 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
         })()
 
     }, [token, userId])
+
+    useEffect(() => {
+        loggedInUser.bookmarks.filter(post => post.id === id).length ? setInBookmark(true) : setInBookmark(false)
+
+    }, [id, loggedInUser.bookmarks])
+
+    const addToBookmark = async () => {
+
+        try {
+            const res = await axios.post(`/api/users/bookmark/${id}`, {}, {
+                headers: { authorization: token }
+            })
+            Dispatch(updateBookmarks(res.data.bookmarks))
+        }
+        catch (error) {
+            showToast('error', "Something went wrong while trying to add product to bookmarks")
+        }
+    }
+
+    const removeFromBookmark = async () => {
+
+        try {
+            const res = await axios.post(`/api/users/remove-bookmark/${id}`, {}, {
+                headers: { authorization: token }
+            })
+            Dispatch(updateBookmarks(res.data.bookmarks))
+        }
+        catch (error) {
+            showToast('error', "Something went wrong while trying to remove product from bookmarks")
+        }
+    }
 
     return <div key={id} className="shadow-card flex gap-4 p-2 relative pb-10">
 
@@ -68,9 +101,9 @@ const PostCard = ({ id, content, likes, userId, createdAt, comments }: { id: str
                     </span>
                     <p className="text-xl">{comments.commentCount?.toString() || 0}</p>
                 </div>
-                <div className="flex items-center gap-1 cursor-pointer">
+                <div onClick={() => inBookmark ? removeFromBookmark() : addToBookmark()} className="flex items-center gap-1 cursor-pointer">
                     <span className="material-icons-outlined">
-                        bookmark
+                        {inBookmark ? "bookmark" : "bookmark_border"}
                     </span>
                 </div>
             </div>
