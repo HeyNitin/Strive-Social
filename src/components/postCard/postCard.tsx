@@ -27,7 +27,6 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
 
 
     useEffect(() => {
-        console.log('ran', likes.likedBy.some(currUser => currUser.id === loggedInUser.id))
         likes.likedBy.some(currUser => currUser.id === loggedInUser.id) ? setInLiked(true) : setInLiked(false)
     }, [likes.likedBy, loggedInUser.id])
 
@@ -36,7 +35,6 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
             const res = await axios.post(`/api/posts/like/${id}`, {}, {
                 headers: { authorization: token }
             })
-
             Dispatch(setPosts(res.data.posts))
         }
         catch (error) {
@@ -49,7 +47,6 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
             const res = await axios.post(`/api/posts/dislike/${id}`, {}, {
                 headers: { authorization: token }
             })
-            console.log(res)
             Dispatch(setPosts(res.data.posts))
         }
         catch (error) {
@@ -81,17 +78,22 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
         }
     }
 
-    return <div key={id} className="shadow-card flex gap-4 p-2 relative pb-10">
-
-        <img
-            className="rounded-full h-10"
+    return <div onClick={() => Navigate(`/posts/${id}`)} key={id} className="shadow-card flex gap-4 p-2 relative pb-10">
+        <img onClick={(e) => {
+            e.stopPropagation()
+            Navigate(`/profile/${user?.id}`)
+        }}
+            className="rounded-full h-10 cursor-pointer"
             src={user?.profilePicture}
             alt="profile"
         />
         <div>
-            <div className="flex gap-2 items-center">
+            <div onClick={(e) => {
+                e.stopPropagation()
+                Navigate(`/profile/${user?.id}`)
+            }} className="flex gap-2 items-center cursor-pointer">
                 <span className="font-semibold">{user?.firstName} {user?.lastName}</span>
-                <span onClick={() => Navigate(`/profile/${user?.id}`)} className="text-gray-400 cursor-pointer">@{user?.username}</span>
+                <span className="text-gray-400 hover:underline">@{user?.username}</span>
                 <div className="h-1 w-1 rounded-full bg-gray-400 self-center"></div>
                 <span className=" text-sm text-gray-400 mt-0.5">
                     {timeDifference < 1
@@ -105,7 +107,10 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
             </div>
             <p className="flex flex-wrap mt-4">{content}</p>
             <div className="absolute bottom-2 right-2 flex mt-2 gap-4">
-                <div onClick={() => inLiked ? removeFromLiked() : addToLiked()} className="flex items-center gap-1 cursor-pointer">
+                <div onClick={(e) => {
+                    e.stopPropagation()
+                    inLiked ? removeFromLiked() : addToLiked()
+                }} className="flex items-center gap-1 cursor-pointer">
                     <span className="material-icons-outlined">
                         {inLiked ? "favorite" : "favorite_border"}
                     </span>
@@ -117,7 +122,10 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
                     </span>
                     <p className="text-xl">{comments.commentCount?.toString() || 0}</p>
                 </div>
-                <div onClick={() => inBookmark ? removeFromBookmark() : addToBookmark()} className="flex items-center gap-1 cursor-pointer">
+                <div onClick={(e) => {
+                    e.stopPropagation()
+                    inBookmark ? removeFromBookmark() : addToBookmark()
+                }} className="flex items-center gap-1 cursor-pointer">
                     <span className="material-icons-outlined">
                         {inBookmark ? "bookmark" : "bookmark_border"}
                     </span>

@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { useAppDispatch, useAppSelector } from "appRedux/hooks";
+import { setPosts } from "appRedux/postSlice";
+import axios from "axios";
+import { useEffect } from "react";
+import { showToast } from "components/toast/toast";
 
 type headerTypes = {
 	darkMode: Boolean;
@@ -8,6 +13,25 @@ type headerTypes = {
 };
 
 const Header = ({ darkMode, setDarkMode }: headerTypes): JSX.Element => {
+	const { token } = useAppSelector(store => store.userData)
+	const Dispatch = useAppDispatch()
+
+	useEffect(() => {
+
+		(async () => {
+			try {
+				const res = await axios.get('/api/posts', {
+					headers: { authorization: token }
+				})
+				Dispatch(setPosts(res.data.posts))
+			}
+			catch (error) {
+				showToast('error', "Something went wrong while trying to load posts")
+			}
+		})()
+
+	}, [Dispatch, token])
+
 	const themeHandler = () => {
 		setDarkMode((prev: boolean) => {
 			localStorage.setItem("theme", JSON.stringify(!prev));

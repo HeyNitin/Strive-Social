@@ -30,12 +30,22 @@ export const posts = [
 			],
 		},
 		comments: {
-			commentCount: 0,
-			commentedBy: [],
+			commentCount: 1,
+			commentedBy: [
+				{
+					username: "naval",
+					id: "102",
+					firstName: "Naval",
+					lastName: "Ravikant",
+					profilePicture: "https://i.postimg.cc/RCDBg33G/profile-Naval.jpg",
+					comment: "So true",
+					commentId: "101",
+				},
+			],
 		},
 		user: {
 			username: "kunalb11",
-			userId: "103",
+			id: "103",
 			firstName: "Kunal",
 			lastName: "Shah",
 			profilePicture: "https://i.postimg.cc/K8VfV2P6/profile-Kunal.jpg",
@@ -74,12 +84,22 @@ export const posts = [
 			],
 		},
 		comments: {
-			commentCount: 0,
-			commentedBy: [],
+			commentCount: 1,
+			commentedBy: [
+				{
+					username: "heynitin",
+					id: "101",
+					firstName: "Nitin",
+					lastName: "Kalra",
+					profilePicture: "https://i.postimg.cc/6p1n3fTn/profile-Nitin.jpg",
+					comment: "Yeah, this is absolutely corret",
+					commentId: "101",
+				},
+			],
 		},
 		user: {
 			username: "naval",
-			userId: "102",
+			id: "102",
 			firstName: "Naval",
 			lastName: "Ravikant",
 			profilePicture: "https://i.postimg.cc/RCDBg33G/profile-Naval.jpg",
