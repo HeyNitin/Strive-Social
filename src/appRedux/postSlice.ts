@@ -74,13 +74,11 @@ const postSlice = createSlice({
 			state,
 			action: { type: string; payload: { id: string; comments: commentsTypes } }
 		) => {
-			setPosts(
-				state.posts.map((post) =>
-					post.id === action.payload.id
-						? { ...post, comments: action.payload.comments }
-						: post
-				)
-			);
+			state.posts.forEach((post, index) => {
+				if (post.id === action.payload.id) {
+					state.posts[index] = { ...post, comments: action.payload.comments };
+				}
+			});
 		},
 	},
 });
