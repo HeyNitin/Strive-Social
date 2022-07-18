@@ -4,7 +4,6 @@ import { setPosts } from "appRedux/postSlice";
 import axios from "axios";
 import { showToast } from "components/toast/toast";
 import { useEffect, useRef, useState } from "react";
-import { editPostCommentHandler } from "backend/controllers/CommentsController";
 
 const emojiArray = [
     "😅",

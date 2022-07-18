@@ -26,12 +26,12 @@ export type commentedBy = {
 };
 
 export type likesTypes = {
-	likeCount: Number;
+	likeCount: number;
 	likedBy: likedBy[];
 };
 
 export type commentsTypes = {
-	commentCount: Number;
+	commentCount: number;
 	commentedBy: commentedBy[];
 };
 
