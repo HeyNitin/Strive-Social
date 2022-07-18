@@ -88,10 +88,10 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
             alt="profile"
         />
         <div>
-            <div onClick={(e) => {
+            <span onClick={(e) => {
                 e.stopPropagation()
                 Navigate(`/profile/${user?.id}`)
-            }} className="flex gap-2 items-center cursor-pointer">
+            }} className="flex gap-2 items-center cursor-pointer w-fit">
                 <span className="font-semibold">{user?.firstName} {user?.lastName}</span>
                 <span className="text-gray-400 hover:underline">@{user?.username}</span>
                 <div className="h-1 w-1 rounded-full bg-gray-400 self-center"></div>
@@ -104,7 +104,7 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
                                 ? timeDifference / 24 + "h ago"
                                 : `${postDate.toString().slice(3, 10)}`}
                 </span>
-            </div>
+            </span>
             <p className="flex flex-wrap mt-4">{content}</p>
             <div className="absolute bottom-2 right-2 flex mt-2 gap-4">
                 <div onClick={(e) => {

@@ -1,3 +1,5 @@
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useAppDispatch, useAppSelector } from "appRedux/hooks"
 import { commentedBy, postTypes, setComments, setPosts } from "appRedux/postSlice"
 import axios from "axios"
@@ -10,7 +12,8 @@ import { useNavigate, useParams } from "react-router-dom"
 const PostPage = (): JSX.Element => {
     const [post, setPost] = useState<postTypes>()
     const [textArea, setTextArea] = useState<string>('')
-    const { posts: { posts }, userData: { token } } = useAppSelector(store => store)
+    const [menuClick, setMenuClick] = useState<boolean>(false)
+    const { posts: { posts }, userData: { token, loggedInUser } } = useAppSelector(store => store)
     const Dispatch = useAppDispatch()
     const { postId } = useParams()
     const Navigate = useNavigate()
@@ -44,13 +47,40 @@ const PostPage = (): JSX.Element => {
         }
     }
 
+    const deletePost = async () => {
+        try {
+            const res = await axios.delete(`/api/posts/${postId}`, {
+                headers: { authorization: token }
+            })
+            Dispatch(setPosts(res.data.posts))
+            Navigate('/homepage')
+            showToast('success', "Post has been successfully deleted")
+
+        }
+        catch (error) {
+
+            showToast('error', "Couldn't delete the post")
+        }
+    }
+
     return <div className="mx-32 flex gap-12 p-8">
         <div className="fixed h-full">
             <Sidebar />
         </div>
         <div className="w-3/4 ml-auto">
-            <div>
+            <div className="relative">
                 {post && <PostCard key={postId} post={post} />}
+                {post?.user.id === loggedInUser.id && <FontAwesomeIcon onClick={(e) => {
+                    e.stopPropagation()
+                    setMenuClick(prev => !prev)
+                }} className="absolute top-2 right-3 cursor-pointer p-1" icon={faEllipsisV} />}
+                {menuClick && <div className="flex flex-col absolute top-4 right-6 bg-white shadow-card w-20 rounded-md">
+                    <div className="border border-b-orange-500 text-center cursor-pointer">Edit</div>
+                    <div onClick={(e) => {
+                        e.stopPropagation()
+                        deletePost()
+                    }} className="text-center cursor-pointer">Delete</div>
+                </div>}
             </div>
             <div className="mt-10 flex flex-col">
                 {post?.comments.commentedBy.map((comment: commentedBy) => {
