@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useAppDispatch, useAppSelector } from "appRedux/hooks"
 import { commentedBy, postTypes, setComments, setPosts } from "appRedux/postSlice"
 import axios from "axios"
+import { AddPosts } from "components/addPosts/addPosts"
+import { EditPost } from "components/editPost/editPost"
 import { PostCard } from "components/postCard/postCard"
 import { Sidebar } from "components/sidebar/sidebar"
 import { showToast } from "components/toast/toast"
@@ -13,15 +15,18 @@ const PostPage = (): JSX.Element => {
     const [post, setPost] = useState<postTypes>()
     const [textArea, setTextArea] = useState<string>('')
     const [menuClick, setMenuClick] = useState<boolean>(false)
+    const [isEditMode, setIsEditMode] = useState<boolean>(false)
     const { posts: { posts }, userData: { token, loggedInUser } } = useAppSelector(store => store)
     const Dispatch = useAppDispatch()
     const { postId } = useParams()
     const Navigate = useNavigate()
     const heightRef = useRef<HTMLTextAreaElement>(null)
+    const menuRef = useRef<HTMLDivElement>(null)
+    const showMenuRef = useRef<SVGSVGElement>(null)
 
     useEffect(() => {
-        const newPost = posts.filter(currPost => currPost.id === postId)[0]
-        setPost(newPost)
+        const newPost = posts.filter((currPost: postTypes) => currPost.id === postId)[0]
+        newPost ? setPost(newPost) : Navigate('/homepage')
     }, [postId, posts])
 
     useEffect(() => {
@@ -35,6 +40,22 @@ const PostPage = (): JSX.Element => {
             }
         })()
     }, [postId])
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            event.stopPropagation()
+            if (
+                menuRef.current && showMenuRef.current &&
+                !menuRef.current.contains(event.target as Node) && !showMenuRef.current.contains(event.target as Node)
+            ) {
+                setMenuClick(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [menuRef, showMenuRef]);
 
     const postComment = async () => {
         try {
@@ -68,20 +89,23 @@ const PostPage = (): JSX.Element => {
             <Sidebar />
         </div>
         <div className="w-3/4 ml-auto">
-            <div className="relative">
+            {post && isEditMode ? <EditPost post={post} setIsEditMode={setIsEditMode} setMenuClick={setMenuClick} /> : (<div className="relative">
                 {post && <PostCard key={postId} post={post} />}
-                {post?.user.id === loggedInUser.id && <FontAwesomeIcon onClick={(e) => {
+                {post?.user.id === loggedInUser.id && <FontAwesomeIcon ref={showMenuRef} onClick={(e) => {
                     e.stopPropagation()
                     setMenuClick(prev => !prev)
                 }} className="absolute top-2 right-3 cursor-pointer p-1" icon={faEllipsisV} />}
-                {menuClick && <div className="flex flex-col absolute top-4 right-6 bg-white shadow-card w-20 rounded-md">
-                    <div className="border border-b-orange-500 text-center cursor-pointer">Edit</div>
+                {menuClick && <div ref={menuRef} className="flex flex-col absolute top-4 right-6 bg-white shadow-card w-20 rounded-md">
+                    <div onClick={(e) => {
+                        e.stopPropagation()
+                        setIsEditMode(true)
+                    }} className="border border-b-orange-500 text-center cursor-pointer">Edit</div>
                     <div onClick={(e) => {
                         e.stopPropagation()
                         deletePost()
                     }} className="text-center cursor-pointer">Delete</div>
                 </div>}
-            </div>
+            </div>)}
             <div className="mt-10 flex flex-col">
                 {post?.comments.commentedBy.map((comment: commentedBy) => {
                     return (<div key={comment.commentId} className="flex gap-4 p-2 relative">
