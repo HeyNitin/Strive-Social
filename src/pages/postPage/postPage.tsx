@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useAppDispatch, useAppSelector } from "appRedux/hooks"
 import { commentedBy, postTypes, setComments, setPosts } from "appRedux/postSlice"
 import axios from "axios"
-import { AddPosts } from "components/addPosts/addPosts"
 import { EditPost } from "components/editPost/editPost"
 import { PostCard } from "components/postCard/postCard"
 import { Sidebar } from "components/sidebar/sidebar"
@@ -27,7 +26,7 @@ const PostPage = (): JSX.Element => {
     useEffect(() => {
         const newPost = posts.filter((currPost: postTypes) => currPost.id === postId)[0]
         newPost ? setPost(newPost) : Navigate('/homepage')
-    }, [postId, posts])
+    }, [postId, posts, Navigate])
 
     useEffect(() => {
         (async () => {
