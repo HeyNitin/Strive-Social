@@ -5,6 +5,7 @@ import { PostCard } from "components/postCard/postCard";
 import { Sidebar } from "components/sidebar/sidebar";
 import { showToast } from "components/toast/toast";
 import { useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 const Bookmarks = (): JSX.Element => {
 	const { token, loggedInUser } = useAppSelector(store => store.userData)
@@ -23,7 +24,7 @@ const Bookmarks = (): JSX.Element => {
 				showToast('error', "Something went wrong while tring to load bookmakrs")
 			}
 		})()
-	}, [])
+	}, [Dispatch, token])
 
 	const bookmarks = useMemo(() => posts.filter(post => loggedInUser.bookmarks.some(item => item.id === post.id)), [posts, loggedInUser.bookmarks])
 
@@ -33,9 +34,9 @@ const Bookmarks = (): JSX.Element => {
 				<Sidebar />
 			</div>
 			<div className="w-3/4 ml-auto flex flex-col gap-8">
-				{bookmarks.map(post =>
+				{bookmarks.length > 0 ? (bookmarks.map(post =>
 					<PostCard key={post.id} post={post} />
-				)}
+				)) : (<div className="text-xl font-semibold text-center">Nothin's in here, Go to <Link className="text-gray-500" to={'/homepage'}>Homepage</Link></div>)}
 			</div>
 		</div>
 	)

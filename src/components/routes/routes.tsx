@@ -65,15 +65,7 @@ const Routes = (): JSX.Element => {
 					}
 				/>
 				<Route
-					path="/profile"
-					element={
-						<RequireAuth>
-							<Profile />
-						</RequireAuth>
-					}
-				/>
-				<Route
-					path="/profile/:userID"
+					path="/profile/:userId"
 					element={
 						<RequireAuth>
 							<Profile />
