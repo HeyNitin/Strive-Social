@@ -130,7 +130,7 @@ export const editPostHandler = function (schema, request) {
 		const postId = request.params.postId;
 		const { postData } = JSON.parse(request.requestBody);
 		let post = schema.posts.findBy({ id: postId }).attrs;
-		if (post.username !== user.username) {
+		if (post.user.username !== user.username) {
 			return new Response(
 				400,
 				{},
@@ -274,7 +274,7 @@ export const deletePostHandler = function (schema, request) {
 		}
 		const postId = request.params.postId;
 		let post = schema.posts.findBy({ id: postId }).attrs;
-		if (post.username !== user.username) {
+		if (post.user.username !== user.username) {
 			return new Response(
 				400,
 				{},

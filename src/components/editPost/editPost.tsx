@@ -1,3 +1,4 @@
+import { postTypes } from "appRedux/postSlice"
 import { useAppDispatch, useAppSelector } from "appRedux/hooks"
 import { setPosts } from "appRedux/postSlice";
 import axios from "axios";
@@ -23,10 +24,10 @@ const emojiArray = [
     "♻",
 ];
 
-const AddPosts = (): JSX.Element => {
+const EditPost = ({ post, setIsEditMode, setMenuClick }: { post: postTypes, setIsEditMode: Function, setMenuClick: Function }): JSX.Element => {
     const { loggedInUser, token } = useAppSelector(store => store.userData)
     const [showEmoji, setShowEmoji] = useState<boolean>(false)
-    const [textArea, setTextArea] = useState<string>('')
+    const [textArea, setTextArea] = useState<string>(post.content)
     const emojiRef = useRef<HTMLDivElement>(null);
     const showEmojiRef = useRef<HTMLDivElement>(null);
     const Dispatch = useAppDispatch()
@@ -49,19 +50,18 @@ const AddPosts = (): JSX.Element => {
         };
     }, [emojiRef, showEmojiRef]);
 
-    const addPost = async () => {
-
+    const savePost = async () => {
         try {
-            const res = await axios.post('/api/posts', { "content": textArea }, { headers: { authorization: token } })
+            const res = await axios.post(`/api/posts/edit/${post.id}`, { postData: { content: textArea } }, {
+                headers: { authorization: token }
+            })
             Dispatch(setPosts(res.data.posts))
-            setTextArea('')
-            showToast('success', "Your status has been posted")
+            setIsEditMode(false)
+            setMenuClick(false)
         }
         catch (error) {
-            console.log(error)
-            showToast('error', "Something went wrong while trying to post")
+            showToast('error', "Couldn't save the post")
         }
-
     }
 
 
@@ -94,9 +94,9 @@ const AddPosts = (): JSX.Element => {
                 <div ref={emojiRef} className="flex flex-wrap w-56 p-1 rounded-md bg-orange-300 gap-1 self-end absolute bottom-0">
                     {emojiArray.map(emoji => <div key={emoji} onClick={() => setTextArea(prev => prev + emoji)} className="cursor-pointer">{emoji}</div>)}
                 </div>}
-            <button disabled={textArea.trim() === ''} onClick={() => addPost()} className="self-end bg-orange-500 py-1 disabled:cursor-not-allowed rounded-md px-2 m-4 w-24">Add post</button>
+            <button disabled={textArea.trim() === ''} onClick={() => savePost()} className="self-end bg-orange-500 py-1 disabled:cursor-not-allowed rounded-md px-2 m-4 w-24">Save post</button>
         </div>
     </div>
 }
 
-export { AddPosts }
+export { EditPost }
