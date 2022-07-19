@@ -23,7 +23,7 @@ const Bookmarks = (): JSX.Element => {
 				showToast('error', "Something went wrong while tring to load bookmakrs")
 			}
 		})()
-	}, [])
+	}, [Dispatch, token])
 
 	const bookmarks = useMemo(() => posts.filter(post => loggedInUser.bookmarks.some(item => item.id === post.id)), [posts, loggedInUser.bookmarks])
 
