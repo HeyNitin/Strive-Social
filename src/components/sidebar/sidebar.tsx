@@ -3,17 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faHouse,
 	faMagnifyingGlass,
-	faBell,
 	faBookmark,
 	faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { setToken } from "appRedux/userSlice";
 import { showToast } from "components/toast/toast";
-import { useAppDispatch } from "appRedux/hooks";
+import { useAppDispatch, useAppSelector } from "appRedux/hooks";
 
 const Sidebar = (): JSX.Element => {
 	const Navigate = useNavigate();
 	const Dispatch = useAppDispatch();
+	const { loggedInUser } = useAppSelector(store => store.userData)
 
 	const logoutHandler = () => {
 		Dispatch(setToken(""));
@@ -45,16 +45,6 @@ const Sidebar = (): JSX.Element => {
 					Explore
 				</div>
 			</NavLink>
-			<NavLink to={"/notifications"}>
-				<div
-					className={
-						"hover:bg-slate-200 dark:hover:bg-darkLight py-2 p-1 rounded-md flex flex-row items-center gap-4"
-					}
-				>
-					<FontAwesomeIcon icon={faBell} />
-					Notifications
-				</div>
-			</NavLink>
 			<NavLink to={"/bookmarks"}>
 				<div
 					className={
@@ -65,7 +55,7 @@ const Sidebar = (): JSX.Element => {
 					Bookmarks
 				</div>
 			</NavLink>
-			<NavLink to={"/profile"}>
+			<NavLink to={`/profile/${loggedInUser.id}`}>
 				<div
 					className={
 						"hover:bg-slate-200 dark:hover:bg-darkLight py-2 p-1 rounded-md flex flex-row items-center gap-4"

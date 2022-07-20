@@ -90,8 +90,13 @@ export const createPostHandler = function (schema, request) {
 				commentCound: 0,
 				commentedBy: [],
 			},
-			username: user.username,
-			userId: user.id,
+			user: {
+				username: user.username,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				id: user.id,
+				profilePicture: user.profilePicture,
+			},
 			createdAt: formatDate(),
 			updatedAt: formatDate(),
 		};
