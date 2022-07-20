@@ -88,23 +88,24 @@ const PostPage = (): JSX.Element => {
             <Sidebar />
         </div>
         <div className="w-3/4 ml-auto">
-            {post && isEditMode ? <EditPost post={post} setIsEditMode={setIsEditMode} setMenuClick={setMenuClick} /> : (<div className="relative">
-                {post && <PostCard key={postId} post={post} />}
-                {post?.user.id === loggedInUser.id && <FontAwesomeIcon ref={showMenuRef} onClick={(e) => {
-                    e.stopPropagation()
-                    setMenuClick(prev => !prev)
-                }} className="absolute top-2 right-3 cursor-pointer p-1" icon={faEllipsisV} />}
-                {menuClick && <div ref={menuRef} className="flex flex-col absolute top-4 right-6 bg-white shadow-card w-20 rounded-md">
-                    <div onClick={(e) => {
+            {post && isEditMode ? <EditPost post={post} setIsEditMode={setIsEditMode} setMenuClick={setMenuClick} />
+                : <div className="relative">
+                    {post && <PostCard key={postId} post={post} />}
+                    {post?.user.id === loggedInUser.id && <FontAwesomeIcon ref={showMenuRef} onClick={(e) => {
                         e.stopPropagation()
-                        setIsEditMode(true)
-                    }} className="border border-b-orange-500 text-center cursor-pointer">Edit</div>
-                    <div onClick={(e) => {
-                        e.stopPropagation()
-                        deletePost()
-                    }} className="text-center cursor-pointer">Delete</div>
+                        setMenuClick(prev => !prev)
+                    }} className="absolute top-2 right-3 cursor-pointer p-1" icon={faEllipsisV} />}
+                    {menuClick && <div ref={menuRef} className="flex flex-col absolute top-4 right-6 bg-white shadow-card w-20 rounded-md">
+                        <div onClick={(e) => {
+                            e.stopPropagation()
+                            setIsEditMode(true)
+                        }} className="border border-b-orange-500 text-center cursor-pointer">Edit</div>
+                        <div onClick={(e) => {
+                            e.stopPropagation()
+                            deletePost()
+                        }} className="text-center cursor-pointer">Delete</div>
+                    </div>}
                 </div>}
-            </div>)}
             <div className="mt-10 flex flex-col">
                 {post?.comments.commentedBy.map((comment: commentedBy) => {
                     return (<div key={comment.commentId} className="flex gap-4 p-2 relative">
