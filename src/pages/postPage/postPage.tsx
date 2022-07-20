@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useAppDispatch, useAppSelector } from "appRedux/hooks"
 import { commentedBy, postTypes, setComments, setPosts } from "appRedux/postSlice"
 import axios from "axios"
-import { AddPosts } from "components/addPosts/addPosts"
 import { EditPost } from "components/editPost/editPost"
 import { PostCard } from "components/postCard/postCard"
 import { Sidebar } from "components/sidebar/sidebar"
 import { showToast } from "components/toast/toast"
+import { useDocumentTitle } from "hooks/useDocumentTitle"
 import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -24,10 +24,12 @@ const PostPage = (): JSX.Element => {
     const menuRef = useRef<HTMLDivElement>(null)
     const showMenuRef = useRef<SVGSVGElement>(null)
 
+    useDocumentTitle("")
+
     useEffect(() => {
         const newPost = posts.filter((currPost: postTypes) => currPost.id === postId)[0]
         newPost ? setPost(newPost) : Navigate('/homepage')
-    }, [postId, posts])
+    }, [postId, posts, Navigate])
 
     useEffect(() => {
         (async () => {

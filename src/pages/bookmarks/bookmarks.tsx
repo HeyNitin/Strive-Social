@@ -4,6 +4,7 @@ import axios from "axios";
 import { PostCard } from "components/postCard/postCard";
 import { Sidebar } from "components/sidebar/sidebar";
 import { showToast } from "components/toast/toast";
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 
@@ -11,6 +12,8 @@ const Bookmarks = (): JSX.Element => {
 	const { token, loggedInUser } = useAppSelector(store => store.userData)
 	const { posts } = useAppSelector(store => store.posts)
 	const Dispatch = useAppDispatch()
+
+	useDocumentTitle("Bookmarks")
 
 	useEffect(() => {
 		(async () => {

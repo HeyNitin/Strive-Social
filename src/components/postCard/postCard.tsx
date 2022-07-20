@@ -78,7 +78,7 @@ const PostCard = ({ post }: { post: postTypes }): JSX.Element => {
         }
     }
 
-    return <div onClick={() => Navigate(`/posts/${id}`)} key={id} className="shadow-card flex gap-4 p-2 relative pb-10">
+    return <div onClick={() => Navigate(`/posts/${id}`)} key={id} className="shadow-card flex gap-4 p-6 relative pb-10">
         <img onClick={(e) => {
             e.stopPropagation()
             Navigate(`/profile/${user?.id}`)

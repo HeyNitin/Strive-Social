@@ -19,6 +19,8 @@ export type userData = {
 	following: follow[];
 	bookmarks: postTypes[];
 	profilePicture: string;
+	bio: string;
+	website: string;
 	createdAt: string;
 	updatedAt: string;
 };
@@ -41,6 +43,8 @@ const initialState: initialStateTypes = {
 		password: "",
 		updatedAt: "",
 		username: "",
+		bio: "",
+		website: "",
 	},
 };
 

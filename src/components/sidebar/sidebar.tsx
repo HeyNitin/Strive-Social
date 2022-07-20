@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faHouse,
 	faMagnifyingGlass,
-	faBell,
 	faBookmark,
 	faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -44,16 +43,6 @@ const Sidebar = (): JSX.Element => {
 				>
 					<FontAwesomeIcon icon={faMagnifyingGlass} />
 					Explore
-				</div>
-			</NavLink>
-			<NavLink to={"/notifications"}>
-				<div
-					className={
-						"hover:bg-slate-200 dark:hover:bg-darkLight py-2 p-1 rounded-md flex flex-row items-center gap-4"
-					}
-				>
-					<FontAwesomeIcon icon={faBell} />
-					Notifications
 				</div>
 			</NavLink>
 			<NavLink to={"/bookmarks"}>

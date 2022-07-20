@@ -3,11 +3,14 @@ import { FollowUsersComponent } from "components/followUsersComponent/followUser
 import { PostCard } from "components/postCard/postCard";
 import { Sidebar } from "components/sidebar/sidebar";
 import { showToast } from "components/toast/toast";
+import { useDocumentTitle } from "hooks/useDocumentTitle";
 import { useMemo, useState } from "react";
 
 const Explore = (): JSX.Element => {
 	const [sort, setSort] = useState<{ latest: boolean, trending: boolean }>({ latest: false, trending: true })
 	const { posts } = useAppSelector(store => store.posts)
+
+	useDocumentTitle("Explore")
 
 	const sortedPosts = useMemo(() => {
 		if (!sort.latest && !sort.trending) {

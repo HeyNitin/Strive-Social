@@ -2,7 +2,6 @@ import { Routes as R, Route } from "react-router-dom";
 import { Homepage } from "pages/homepage/homepage";
 import { Landingpage } from "pages/landingpage/landingpage";
 import { Explore } from "pages/explore/explore";
-import { Notifications } from "pages/notifications/notifications";
 import { Bookmarks } from "pages/bookmarks/bookmarks";
 import { PostPage } from "pages/postPage/postPage";
 import { Profile } from "pages/profile/profile";
@@ -37,14 +36,6 @@ const Routes = (): JSX.Element => {
 					element={
 						<RequireAuth>
 							<Explore />
-						</RequireAuth>
-					}
-				/>
-				<Route
-					path="/notifications"
-					element={
-						<RequireAuth>
-							<Notifications />
 						</RequireAuth>
 					}
 				/>
