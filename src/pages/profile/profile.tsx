@@ -1,5 +1,5 @@
-import { useAppSelector } from "appRedux/hooks";
-import { userData } from "appRedux/userSlice";
+import { useAppDispatch, useAppSelector } from "appRedux/hooks";
+import { setLoggedInUser, userData } from "appRedux/userSlice";
 import axios from "axios";
 import { PostCard } from "components/postCard/postCard";
 import { Sidebar } from "components/sidebar/sidebar";
@@ -13,8 +13,9 @@ const Profile = (): JSX.Element => {
 	const [user, setUser] = useState<userData>()
 	const [isLoggedInUser, setIsLoggedInUser] = useState<boolean>(false)
 	const [isFollowing, setIsFollowing] = useState<boolean>(false)
-	const [load, setLoad] = useState<{ posts: boolean, followers: boolean, following: boolean }>({ posts: false, followers: false, following: false })
+	const [load, setLoad] = useState<{ posts: boolean, followers: boolean, following: boolean }>({ posts: true, followers: false, following: false })
 	const { userData: { token, loggedInUser }, posts: { posts } } = useAppSelector(store => store)
+	const Dispatch = useAppDispatch()
 	const { userId } = useParams()
 
 	useDocumentTitle("Profie")
@@ -41,13 +42,46 @@ const Profile = (): JSX.Element => {
 
 	useEffect(() => {
 
-		loggedInUser.following.some(user => user.id === userId) && setIsFollowing(true)
+		loggedInUser.following.some(user => user.id === userId) ? setIsFollowing(true) : setIsFollowing(false)
 
 	}, [loggedInUser.following, userId])
 
 	const userPosts = useMemo(() => {
 		return posts.filter(post => post.user.id === userId)
 	}, [posts, userId])
+
+	const editHandler = () => {
+
+	}
+
+	const addToFollowers = async () => {
+		try {
+			const res = await axios.post(
+				`/api/users/follow/${user?.id}`,
+				{},
+				{ headers: { authorization: token } }
+			);
+			Dispatch(setLoggedInUser(res.data.user));
+			setUser(res.data.followUser)
+		} catch (error) {
+			showToast("error", "Something went wrong while tring to follow the user");
+		}
+	};
+
+
+	const removeFromFollowing = async () => {
+		try {
+			const res = await axios.post(
+				`/api/users/unfollow/${user?.id}`,
+				{},
+				{ headers: { authorization: token } }
+			);
+			Dispatch(setLoggedInUser(res.data.user));
+			setUser(res.data.followUser)
+		} catch (error) {
+			showToast("error", "Something went wrong while tring to unfollow the user");
+		}
+	}
 
 	return (
 		<div className="mx-32 flex gap-12 p-8">
@@ -57,7 +91,7 @@ const Profile = (): JSX.Element => {
 			<div className="w-3/4 ml-auto shadow-card p-8">
 				<div className="flex items-center">
 					<img src={user?.profilePicture} className="rounded-full h-32" alt="profile" />
-					<button className="ml-auto mx-4 h-10 p-1 bg-orange-200 box-border rounded-md w-40 dark:bg-darker">{isLoggedInUser ? "Edit Profile" : isFollowing ? "Following" : "Follow"}</button>
+					<button onClick={() => isLoggedInUser ? editHandler() : isFollowing ? removeFromFollowing() : addToFollowers()} className="ml-auto mx-4 h-10 p-1 bg-orange-200 box-border rounded-md w-40 dark:bg-darker">{isLoggedInUser ? "Edit Profile" : isFollowing ? "Following" : "Follow"}</button>
 				</div>
 				<div className="mt-4">
 					<p className="font-bold text-2xl">{user?.firstName} {user?.lastName}</p>
@@ -69,12 +103,12 @@ const Profile = (): JSX.Element => {
 						<p><span className="font-semibold">{user?.followers.length}</span> Followers</p>
 						<p><span className="font-semibold">{user?.following.length}</span> Following</p>
 					</div>
-					<div className="flex gap-24 justify-center mt-8 font-semibold text-lg border-b-2 w-3/5 m-auto">
+					<div className="flex gap-40 justify-center mt-8 font-semibold text-lg border-b-2 w-3/4 m-auto">
 						<span onClick={() => setLoad({ posts: true, followers: false, following: false })} className={`cursor-pointer  px-6 ${load.posts && "border-b-orange-500 border-b-2 mb-[-2px]"}`}>Posts</span>
 						<span onClick={() => setLoad({ posts: false, followers: true, following: false })} className={`cursor-pointer  px-4 ${load.followers && "border-b-orange-500 border-b-2 mb-[-2px]"}`}>Followers</span>
 						<span onClick={() => setLoad({ posts: false, followers: false, following: true })} className={`cursor-pointer  px-4 ${load.following && "border-b-orange-500 border-b-2 mb-[-2px]"}`}>Following</span>
 					</div>
-					<div className="w-1/2 m-auto mt-4 flex flex-col gap-6">
+					<div className="w-2/3 m-auto mt-4 flex flex-col gap-6">
 						{load.posts ? userPosts.length ? userPosts.map(post =>
 							<PostCard post={post} />
 						) : <div className="m-auto font-semibold">No posts to show</div> : load.followers ? user?.followers.length ? user?.followers.map(user =>

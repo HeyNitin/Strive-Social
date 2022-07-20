@@ -58,7 +58,6 @@ const AddPosts = (): JSX.Element => {
             showToast('success', "Your status has been posted")
         }
         catch (error) {
-            console.log(error)
             showToast('error', "Something went wrong while trying to post")
         }
 

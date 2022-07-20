@@ -51,7 +51,6 @@ const ShouldFollowComponent = ({
 				)
 			);
 		} catch (error) {
-			console.log(error);
 			showToast("error", "Something went wrong while tring to follow the user");
 		}
 	};
