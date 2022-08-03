@@ -29,13 +29,13 @@ const Landingpage = (): JSX.Element => {
 						</p>
 					</div>
 					<button
-						onClick={() => Navigate("/login")}
+						onClick={() => Navigate("/signup")}
 						className="mt-12 text-white bg-orange-600 w-72 p-1"
 					>
 						Join Now
 					</button>
 					<p
-						onClick={() => Navigate("/signup")}
+						onClick={() => Navigate("/login")} 
 						className="cursor-pointer mt-2 text-orange-500"
 					>
 						Already have an accout?
