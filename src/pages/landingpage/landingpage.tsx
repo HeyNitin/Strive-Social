@@ -8,7 +8,7 @@ const Landingpage = (): JSX.Element => {
 	useDocumentTitle("Welcome");
 
 	return (
-		<div className=" min-h-[calc(100vh-5rem)] flex flex-col">
+		<div className="min-h-[calc(100vh-5rem)] flex flex-col">
 			<div className="grid sm:grid-cols-2 min-h-[calc(100vh-12rem)] items-center">
 				<div className="flex flex-col items-center">
 					<p className="text-3xl mb-12">
@@ -35,7 +35,7 @@ const Landingpage = (): JSX.Element => {
 						Join Now
 					</button>
 					<p
-						onClick={() => Navigate("/login")} 
+						onClick={() => Navigate("/login")}
 						className="cursor-pointer mt-2 text-orange-500"
 					>
 						Already have an accout?

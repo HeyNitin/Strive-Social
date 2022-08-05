@@ -10,14 +10,13 @@ const Homepage = (): JSX.Element => {
 	useDocumentTitle("Home");
 	const { userData: { loggedInUser }, posts: { posts } } = useAppSelector(store => store)
 
-	const filteredPosts = useMemo(() => posts.filter(post => loggedInUser.following.filter(user => user.username === post.user.username).length || post.user.id === loggedInUser.id), [posts, loggedInUser.following, loggedInUser.id])
+	const filteredPosts = useMemo(() => posts.filter(post => loggedInUser.following.filter(user => user.username === post.user.username).length || post.user.id === loggedInUser.id).sort((firstPost, secondPost) =>
+		secondPost.createdAt.localeCompare(firstPost.createdAt)), [posts, loggedInUser.following, loggedInUser.id])
 
 	return (
-		<div className="mx-32 flex gap-12 p-8">
-			<div className="fixed h-full">
-				<Sidebar />
-			</div>
-			<div className="w-2/4 ml-auto">
+		<div className="mx-12 flex gap-12 p-4">
+			<Sidebar />
+			<div className="md:w-3/4 lg:w-2/4 ml-auto">
 				<AddPosts />
 				<div className=" mt-8 flex flex-col gap-8">
 					{filteredPosts.map((post) =>
@@ -26,9 +25,7 @@ const Homepage = (): JSX.Element => {
 
 				</div>
 			</div>
-			<div>
-				<FollowUsersComponent />
-			</div>
+			<FollowUsersComponent />
 		</div>
 	);
 };
