@@ -14,7 +14,7 @@ const Profile = (): JSX.Element => {
 	const [isLoggedInUser, setIsLoggedInUser] = useState<boolean>(false)
 	const [isFollowing, setIsFollowing] = useState<boolean>(false)
 	const [isEdit, setIsEdit] = useState<boolean>(false)
-	const [userUpdateData, setUserUpdateData] = useState<{ website: string, bio: string }>({ website: user?.website || '', bio: user?.website || '' })
+	const [userUpdateData, setUserUpdateData] = useState<{ website: string, bio: string }>({ website: '', bio: '' })
 	const [load, setLoad] = useState<{ posts: boolean, followers: boolean, following: boolean }>({ posts: true, followers: false, following: false })
 	const { userData: { token, loggedInUser }, posts: { posts } } = useAppSelector(store => store)
 	const Dispatch = useAppDispatch()
@@ -22,13 +22,16 @@ const Profile = (): JSX.Element => {
 
 	useDocumentTitle("Profie")
 
+	console.log('here', user, userUpdateData)
+
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await axios.get(`/api/users/${userId}`, {
+				const { data } = await axios.get(`/api/users/${userId}`, {
 					headers: { authorization: token },
 				});
-				setUser(response.data.user)
+				setUser(data.user)
+				setUserUpdateData({ website: data.user.website, bio: data.user.bio })
 			}
 			catch (error) {
 				showToast('error', "Somehing went wrong while trying to load user")
