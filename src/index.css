@@ -5,7 +5,7 @@
 @import "https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round";
 
 :root {
-	font-size: 10px;
+	font-size: 7px;
 }
 
 .Toastify__toast-container--top-right {
@@ -38,10 +38,20 @@
 
 @media screen and (min-width: 300px) {
 	:root {
-		font-size: 12px;
+		font-size: 9px;
+	}
+}
+@media screen and (min-width: 400px) {
+	:root {
+		font-size: 10px;
 	}
 }
 
+@media screen and (min-width: 540px) {
+	:root {
+		font-size: 12px;
+	}
+}
 @media screen and (min-width: 769px) {
 	:root {
 		font-size: 14px;

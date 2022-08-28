@@ -24,7 +24,7 @@ const FollowUsersComponent = (): JSX.Element => {
 	}, [token]);
 
 	return (
-		<aside className="hidden md:block w-100">
+		<aside className="w-100">
 			<SearchComponent users={users} />
 			<ShouldFollowComponent users={users} setUsers={setUsers} />
 		</aside>
